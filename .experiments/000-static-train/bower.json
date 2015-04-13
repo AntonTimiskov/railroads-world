@@ -1,0 +1,20 @@
+{
+  "name": "000-static-train",
+  "version": "0.0.0",
+  "homepage": "https://github.com/AntonTimiskov/railroads-world",
+  "authors": [
+    "Anton Timiskov <atimiskov@gmail.com>"
+  ],
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "three.js": "~0.70.0"
+  }
+}

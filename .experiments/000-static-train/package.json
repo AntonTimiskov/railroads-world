@@ -1,0 +1,29 @@
+{
+  "name": "railroads-world-example-000",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "prepare": "npm install && node ./node_modules/bower/bin/bower install",
+    "start": "node ./node_modules/static-server/bin/static-server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AntonTimiskov/railroads-world"
+  },
+  "keywords": [
+    "railroad",
+    "modeling"
+  ],
+  "author": "Anton Timiskov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AntonTimiskov/railroads-world/issues"
+  },
+  "homepage": "https://github.com/AntonTimiskov/railroads-world",
+  "devDependencies": {
+    "bower": "^1.4.1"
+  },
+  "dependencies": {
+    "static-server": "^2.0.0"
+  }
+}
