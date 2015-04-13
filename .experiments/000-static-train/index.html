@@ -1,0 +1,120 @@
+<html>
+<head>
+    <script src="bower_components/three.js/three.min.js"></script>
+    <script src="loaders/OBJLoader.js"></script>
+    <script src="loaders/MTLLoader.js"></script>
+    <script src="loaders/OBJMTLLoader.js"></script>
+    <style>
+        body { overflow: hidden; }
+    </style>
+</head>
+<body>
+
+    <script>
+
+        var scene, camera, renderer;
+        var geometry, material, mesh;
+
+        init();
+        animate();
+
+        function init() {
+
+            scene = new THREE.Scene();
+
+            camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+            camera.position.z = 1000;
+
+            /*geometry = new THREE.BoxGeometry( 200, 200, 200 );
+            material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
+
+            mesh = new THREE.Mesh( geometry, material );
+            scene.add( mesh );*/
+
+
+            renderer = new THREE.WebGLRenderer({ alpha: true });
+            //renderer.setClearColor( 0xffffff, 0 );
+            renderer.setSize( window.innerWidth, window.innerHeight );
+
+            document.body.appendChild( renderer.domElement );
+
+            //renderer.render( scene, camera );
+            
+            /*var loader = new THREE.JSONLoader();
+ 
+            var createMesh = function( geometry )
+            {
+                var zmesh = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial() );
+                zmesh.position.set( 0, 0, 0 );
+                zmesh.scale.set( 3, 3, 3 );
+                //zmesh.overdraw = true;
+                
+                
+                scene.add( zmesh );
+                
+                renderer.render( scene, camera );
+            };
+             
+            loader.load( "models/Littletrain/SmallTrain.js", createMesh );*/
+            var manager = new THREE.LoadingManager();
+            // instantiate a loader
+            var url = 'models/Littletrain/SmallTrain.obj';
+            var mtlLoader = new THREE.MTLLoader( url.substr( 0, url.lastIndexOf( "/" ) + 1 ) );
+            mtlLoader.load( 'models/Littletrain/SmallTrain.mtl', function ( materials ) {
+                console.log('materials loaded', materials);
+                var materialsCreator = materials;
+                materialsCreator.preload();
+            
+                var loader = new THREE.OBJLoader();
+
+                // load an obj / mtl resource pair
+                loader.load(
+                    // OBJ resource URL
+                    'models/Littletrain/SmallTrain.obj',
+                    // MTL resource URL
+                    //'models/Littletrain/SmallTrain.mtl',
+                    // Function when both resources are loaded
+                    function ( object ) {
+                        console.log('loaded!!!', object)
+                        
+                        
+                        object.traverse( function ( object ) {
+
+                            if ( object instanceof THREE.Mesh ) {
+
+                                if ( object.material.name ) {
+
+                                    var material = materialsCreator.create( object.material.name );
+
+                                    if ( material ) object.material = material;
+
+                                }
+
+                            }
+
+                        } );
+                        
+                        
+                        object.scale.set( 20, 20, 20 );
+                        scene.add( object );
+                        console.log('added')
+                    }
+                );
+            });
+        }
+
+        function animate() {
+
+            requestAnimationFrame( animate );
+
+            //mesh.rotation.x += 0.01;
+            //mesh.rotation.y += 0.02;
+
+            renderer.render( scene, camera );
+
+        }
+
+    </script>
+
+</body>
+</html>
