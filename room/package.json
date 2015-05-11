@@ -1,0 +1,51 @@
+{
+  "name": "rrw-room",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/rrw-room.bundle.js",
+  "scripts": {
+    "test": "npm test",
+    "compile": "babel src --out-dir .tmp/es5 && browserify .tmp/es5/index.js -o dist/rrw-room.bundle.js && touch dist/rrw-room.bundle.css && cp -r src/index.html src/loader.js ../assets/* dist",
+    "server": "static-server dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AntonTimiskov/railroads-world"
+  },
+  "keywords": [
+    "railroad",
+    "modeling"
+  ],
+  "author": "Anton Timiskov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AntonTimiskov/railroads-world/issues"
+  },
+  "homepage": "https://github.com/AntonTimiskov/railroads-world/room",
+  "browser": {
+    "threeobjloader": "./vendors/threejs/OBJLoader.js",
+    "threemtlloader": "./vendors/threejs/MTLLoader.js"
+  },
+  "browserify-shim": {
+    "three": "three",
+    "threemtlloader": { "depends": ["three:THREE"] },
+    "threeobjloader": { "depends": ["three:THREE"] }
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "devDependencies": {
+    "babel": "^5.2.9",
+    "bower": "^1.4.1",
+    "browserify": "^10.0.0",
+    "browserify-shim": "^3.8.6"
+  },
+  "dependencies": {
+    "bluebird": "^2.9.25",
+    "lodash": "^3.8.0",
+    "static-server": "^2.0.0",
+    "three": "^0.71.0"
+  }
+}
