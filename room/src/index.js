@@ -8,6 +8,7 @@ var modelLoader = require('./model-loader.js').loader;
 
 var scene = require('./scene.js').scene;
 var camera = require('./scene.js').camera;
+var light = require('./scene.js').light;
 var obj;
 
 var renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -18,22 +19,33 @@ container.appendChild( renderer.domElement );
 
 
 // instantiate a loader
-var model = {
+var model;
+/*model = {
   name: "SmallTrain",
   mtl: 'models/Smalltrain/Smalltrain.mtl',
   obj: 'models/Smalltrain/Smalltrain.obj'
-};
+};*/
 
 /*model = {
   name: "SteamTrain",
   mtl: 'models/SteamEngine/STEAMENGINE.mtl',
-  obj: 'models/SteamEngine/STEAMENGINE.obj'
+  obj: 'models/SteamEngine/STEAMENGINE.obj',
+  scale: 1/10
 }*/
 
-/*model = {
+model = {
   name: "LocomotiveTGM3",
   mtl: 'models/LocomotiveTGM3/Locomotive-TGM3.mtl',
-  obj: 'models/LocomotiveTGM3/Locomotive-TGM3.obj'
+  obj: 'models/LocomotiveTGM3/Locomotive-TGM3.obj',
+  scale: 4
+}
+
+
+/*model = {
+  name: "SpaceFighter01",
+  mtl: "models/SpaceFighter01/SpaceFighter01.mtl",
+  obj: "models/SpaceFighter01/SpaceFighter01.obj",
+  scale: 5
 }*/
 
 Promise.promisify(modelLoader.load)
@@ -64,6 +76,15 @@ function render() {
       z: 0
   });
 
+  light.position.x = a.position.x;
+  light.position.y = a.position.y;
+  light.position.z = a.position.z;
+  light.lookAt({
+      x: 0,
+      y: 0,
+      z: 0
+  });
+
 	renderer.render( scene, camera );
 }
 render();
@@ -73,11 +94,8 @@ container.addEventListener("mousedown", mouseDown, false);
 container.addEventListener("mouseup", mouseUp, false);
 container.addEventListener("mousewheel", mouseWheel, false);
 container.addEventListener("DOMMouseScroll", mouseWheelDOM, false);
-/*window.addEventListener("resize", resize, false);
-window.addEventListener("contextmenu", contextMenu, false);
-window.addEventListener("keyup", keyboard, false);
-render()
-*/
+window && window.addEventListener("resize", resize, false);
+window && window.addEventListener("contextmenu", contextMenu, false);
 
 function mouseWheel(e){
 
@@ -107,4 +125,15 @@ function mouseMove(e) {
   if (cam_p < 56) { cam_p=56; }
 
   cam_y += e.movementX / 10;
+}
+
+function resize(e) {
+  e.preventDefault();
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function contextMenu(e) {
+  e.preventDefault();
 }

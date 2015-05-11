@@ -7,12 +7,19 @@ camera.position.z = 10;
 camera.position.y = 2;
 camera.position.x = 0;
 
-var alight = new THREE.AmbientLight( 0xf0f0f0 ); // soft white light
-scene.add( alight );
+// add a ambient light
+var light	= new THREE.AmbientLight( 0xffffff );
+scene.add( light )
 
-var light = new THREE.PointLight( 0x404040, 2, 1000 );
-light.position.set( 150, 150, 150 );
+// add a light in front
+var light	= new THREE.DirectionalLight('white', 1);
+light.position.set(10, 10, 0);
 scene.add( light );
+// add a light behind
+/*var light	= new THREE.DirectionalLight('white', 1);
+light.position.set(-10, -10, -0);
+scene.add( light );*/
 
 module.exports.scene = scene;
 module.exports.camera = camera;
+module.exports.light = light;
