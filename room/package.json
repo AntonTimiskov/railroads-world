@@ -5,8 +5,8 @@
   "main": "dist/rrw-room.bundle.js",
   "scripts": {
     "test": "npm test",
-    "compile": "babel src --out-dir .tmp/es5 && browserify .tmp/es5/index.js -o dist/rrw-room.bundle.js && lessc src/room.less dist/rrw-room.bundle.css && touch dist/rrw-room.bundle.css && cp -r src/index.html src/loader.js ../assets/* dist",
-    "server": "static-server dist"
+    "build": "./node_modules/.bin/gulp build",
+    "start": "./node_modules/.bin/gulp"
   },
   "repository": {
     "type": "git",
@@ -57,7 +57,14 @@
     "bower": "^1.4.1",
     "browserify": "^10.0.0",
     "browserify-shim": "^3.8.6",
-    "less": "^2.5.0"
+    "gulp": "^3.8.11",
+    "gulp-babel": "^5.1.0",
+    "gulp-less": "^3.0.3",
+    "gulp-open": "^0.3.2",
+    "gulp-serve": "^1.0.0",
+    "less": "^2.5.0",
+    "require-dir": "^0.3.0",
+    "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
     "bluebird": "^2.9.25",
