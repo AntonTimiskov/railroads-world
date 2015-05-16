@@ -1,17 +1,26 @@
 'use strict';
 
-var THREE = require('three');
-let Promise = require('bluebird');
+let THREE = require('three'),
+    Promise = require('bluebird'),
+    _ = require('lodash');
+
 
 var log = require('./log.js');
 var modelLoader = require('./model-loader.js').loader;
+var progress = require('./loader.js');
 
 var scene = require('./scene.js').scene;
 var camera = require('./scene.js').camera;
 var light = require('./scene.js').light;
-var obj;
 
-var renderer = new THREE.WebGLRenderer({ alpha: true });
+var obj;
+var renderer;
+
+try {
+  renderer = new THREE.WebGLRenderer({ alpha: true });
+} catch (e) {
+  alert('You have no WebGL support.');
+}
 renderer.setSize( window.innerWidth, window.innerHeight );
 
 var container = document.body;
@@ -47,16 +56,18 @@ model = {
   obj: "models/SpaceFighter01/SpaceFighter01.obj",
   scale: 5
 }*/
-
+progress.setProgress(10);
 Promise.promisify(modelLoader.load)
 .call(modelLoader, model)
 .then( (o) => {
+
+  progress.setProgress(100);
 
   obj = o;
   obj.matrixAutoUpdate = true;
   scene.add( obj );
 
-  renderer.render( scene, camera );
+  render();
 });
 
 let cam_p = 80;
@@ -64,7 +75,6 @@ let cam_y = 0;
 let cam_d = 100;
 
 function render() {
-	requestAnimationFrame( render );
 
   let a = camera;
   a.position.y = cam_d * Math.cos(cam_p * Math.PI / 180);
@@ -89,13 +99,18 @@ function render() {
 }
 render();
 
-container.addEventListener("mousemove", mouseMove, false);
-container.addEventListener("mousedown", mouseDown, false);
-container.addEventListener("mouseup", mouseUp, false);
-container.addEventListener("mousewheel", mouseWheel, false);
-container.addEventListener("DOMMouseScroll", mouseWheelDOM, false);
-window && window.addEventListener("resize", resize, false);
-window && window.addEventListener("contextmenu", contextMenu, false);
+let raf = requestAnimationFrame.bind(null, render);
+function renderWrap(fn) {
+  return _.wrap(fn, (f, ...a) => { f.apply(null, a); raf(); });
+}
+
+container.addEventListener("mousemove", renderWrap(mouseMove), false);
+container.addEventListener("mousedown", renderWrap(mouseDown), false);
+container.addEventListener("mouseup", renderWrap(mouseUp), false);
+container.addEventListener("mousewheel", renderWrap(mouseWheel), false);
+container.addEventListener("DOMMouseScroll", renderWrap(mouseWheelDOM), false);
+window && window.addEventListener("resize", renderWrap(resize), false);
+window && window.addEventListener("contextmenu", renderWrap(contextMenu), false);
 
 function mouseWheel(e){
 

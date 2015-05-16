@@ -33,7 +33,7 @@ class ModelLoader {
     let loader = new THREE.OBJMTLLoader();
     loader.load( objfile, mtlfile, ( object3d ) => {
 
-      assert( object3d, 'Could not load "'+model+'" or it\'s dependency' );
+      assert( object3d, `Could not load "${model}" or it\'s dependency` );
 
       object3d.scale.multiplyScalar(1/scale)
 
@@ -44,7 +44,7 @@ class ModelLoader {
     this.onProgress('loading progress'),
     (err) => {
 
-      log.error('ModelLoader:',err);
+      log.error(`ModelLoader: error while loading ${objfile}, ${mtlfil}: ${err}`);
       next(err);
     });
   }
